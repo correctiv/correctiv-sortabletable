@@ -17,7 +17,7 @@ class SortableTableCMSPlugin(CMSPluginBase):
     module = _('Table')
     name = _('Sortable Table')
     model = SortableTablePlugin
-    render_template = 'sortable_table/render_table.html'
+    render_template = 'sortabletable/render_table.html'
     text_enabled = True
 
     prepopulated_fields = {"slug": ("title",)}

@@ -24,7 +24,7 @@ def find_version(*file_paths):
 
 setup(
     name="correctiv-sortabletable",
-    version=find_version('sortable_table/__init__.py'),
+    version=find_version('sortabletable/__init__.py'),
     url='https://github.org/correctiv/correctiv-sortabletable',
     license='MIT',
     description="Sortable Table Django CMS Plugin",

@@ -3,14 +3,14 @@
 {% load static %}
 
 {% addtoblock "css" %}
-  <link rel="stylesheet" href="{% static "sortable_table/css/main.css" %}">
+  <link rel="stylesheet" href="{% static "sortabletable/css/main.css" %}">
 {% endaddtoblock %}
 
 {% addtoblock "js" %}
-  <script src="{% static "sortable_table/js/vendor/tablesort/tablesort.min.js" %}"></script>
-  <script src="{% static "sortable_table/js/vendor/tablesort/src/sorts/tablesort.numeric.js" %}"></script>
-  <script src="{% static "sortable_table/js/vendor/chroma-js/chroma.min.js" %}"></script>
-  <script src="{% static "sortable_table/js/main.js" %}"></script>
+  <script src="{% static "sortabletable/js/vendor/tablesort/tablesort.min.js" %}"></script>
+  <script src="{% static "sortabletable/js/vendor/tablesort/src/sorts/tablesort.numeric.js" %}"></script>
+  <script src="{% static "sortabletable/js/vendor/chroma-js/chroma.min.js" %}"></script>
+  <script src="{% static "sortabletable/js/main.js" %}"></script>
   <script>
     sortableTable(document.getElementById('sortable-table-{{ table_id }}'), {{ settings|safe }});
   </script>

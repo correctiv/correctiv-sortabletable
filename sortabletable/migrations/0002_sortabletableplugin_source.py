@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sortable_table', '0001_initial'),
+        ('sortabletable', '0001_initial'),
     ]
 
     operations = [
