@@ -107,9 +107,9 @@ class SortableTable(models.Model):
 
     def get_cell(self, value, col_settings):
         if col_settings.get('html', False):
-            return value
+            return mark_safe(value)
         if col_settings.get('text', False):
-            return escape(value)
+            return value
         try:
             value = float(value)
             if 'precision' in col_settings:
@@ -124,7 +124,7 @@ class SortableTable(models.Model):
                 postfix=col_settings.get('postfix', '')
             ).strip())
         except ValueError:
-            return escape(value)
+            return value
 
 
 
