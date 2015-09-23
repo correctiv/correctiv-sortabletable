@@ -102,11 +102,7 @@ class SortableTable(models.Model):
 
     def get_cell_text(self, col, col_settings):
         if col:
-            return mark_safe(u'{prefix}{value}{postfix}'.format(
-                prefix=col_settings.get('prefix', ''),
-                value=self.get_cell(col, col_settings),
-                postfix=col_settings.get('postfix', '')
-            ).strip())
+            return self.get_cell(col, col_settings)
         return ''
 
     def get_cell(self, value, col_settings):
@@ -118,11 +114,18 @@ class SortableTable(models.Model):
             value = float(value)
             if 'precision' in col_settings:
                 value = round(value, col_settings['precision'])
-            return number_format(value,
+
+            formatted_value = number_format(value,
                                  decimal_pos=col_settings.get('decimals', None),
                                  force_grouping=True)
+            return mark_safe(u'{prefix}{value}{postfix}'.format(
+                prefix=col_settings.get('prefix', ''),
+                value=formatted_value,
+                postfix=col_settings.get('postfix', '')
+            ).strip())
         except ValueError:
             return escape(value)
+
 
 
 if CMSPlugin is not None:
