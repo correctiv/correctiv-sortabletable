@@ -25,6 +25,17 @@
         {% endfor %}
       </tr>
     </thead>
+    {% if footer %}
+    <tfoot>
+      {% for footer_row in footer %}
+      <tr>
+        {% for cell in footer_row %}
+          <td{% if cell.is_number %} class="numbers"{% endif %}>{{ cell.text }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tfoot>
+    {% endif %}
     <tbody>
       {% for row in rows %}
       <tr>

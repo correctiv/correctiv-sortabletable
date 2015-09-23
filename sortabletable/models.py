@@ -53,9 +53,11 @@ class SortableTable(models.Model):
         reader = self.get_dict_reader()
         header_row = reader.next()
         header = self.get_header(header_row)
+        footer = list(self.get_footer(reader))
         rows = (self.get_column(row) for row in reader)
         return {
             'header': header,
+            'footer': footer,
             'rows': rows
         }
 
@@ -67,6 +69,11 @@ class SortableTable(models.Model):
                 'name': mark_safe(col_settings.get('name', col_name)),
                 'attrs': self.get_header_attrs(col_settings)
             }
+
+    def get_footer(self, reader):
+        footer_rows = self.settings.get('footer', 0)
+        for i in range(0, footer_rows):
+            yield self.get_column(reader.next())
 
     def get_header_attrs(self, col_settings):
         attrs = []
@@ -90,12 +97,17 @@ class SortableTable(models.Model):
                 'value': col,
                 'is_number': not (col_settings.get('html', False) or
                                col_settings.get('text', False)),
-                'text': mark_safe(u'{prefix}{value}{postfix}'.format(
-                    prefix=col_settings.get('prefix', ''),
-                    value=self.get_cell(col, col_settings),
-                    postfix=col_settings.get('postfix', '')
-                ).strip())
+                'text': self.get_cell_text(col, col_settings)
             }
+
+    def get_cell_text(self, col, col_settings):
+        if col:
+            return mark_safe(u'{prefix}{value}{postfix}'.format(
+                prefix=col_settings.get('prefix', ''),
+                value=self.get_cell(col, col_settings),
+                postfix=col_settings.get('postfix', '')
+            ).strip())
+        return ''
 
     def get_cell(self, value, col_settings):
         if col_settings.get('html', False):

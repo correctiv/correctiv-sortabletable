@@ -8,9 +8,9 @@ window.sortableTable = (function(){
     return Number(tdText);
   };
 
-  var colourColumn = function(table, col, settings) {
+  var colourColumn = function(tbody, col, settings) {
     var vals = [], i, td, tdText, val;
-    var trs = table.getElementsByTagName('tr');
+    var trs = tbody.getElementsByTagName('tr');
     var min = Infinity, max = -Infinity;
     var domain = settings.domain;
     var values = [];
@@ -20,7 +20,7 @@ window.sortableTable = (function(){
       t = function(x) {return Math.LOG10E * Math.log(Math.abs(x)) * Math.sign(x);};
     }
     if (domain === undefined) {
-      for (i = 1; i < trs.length; i += 1) { // Skip header
+      for (i = 0; i < trs.length; i += 1) { // Skip header
         td = trs[i].getElementsByTagName('td')[col];
         val = t(getValue(td));
         values.push(val);
@@ -36,7 +36,7 @@ window.sortableTable = (function(){
       domain = domain.reverse();
     }
     var colorScale = chroma.scale(settings.scale).mode('lab').domain(domain);
-    for (i = 1; i < trs.length; i += 1) { // Skip header
+    for (i = 0; i < trs.length; i += 1) {
       td = trs[i].getElementsByTagName('td')[col];
       val = t(getValue(td));
       var backgroundColor = colorScale(val).hex();
@@ -49,11 +49,12 @@ window.sortableTable = (function(){
   };
 
   var sortableTable = function(table, settings) {
+    var tbody = table.getElementsByTagName('tbody')[0];
     settings.scale = settings.scale || 'OrRd';
     var columns = settings.columns;
     for (var i = 0; i < columns.length; i += 1) {
       if (!columns[i].text && !columns[i].html) {
-        colourColumn(table, i, {
+        colourColumn(tbody, i, {
           scale: columns[i].scale || settings.scale,
           domain: columns[i].domain,
           midpoint: columns[i].midpoint,
