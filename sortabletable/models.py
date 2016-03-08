@@ -3,7 +3,6 @@ from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import escape
 from django.utils import timezone
 from django.utils.six import BytesIO
 from django.utils.formats import number_format
@@ -114,10 +113,12 @@ class SortableTable(models.Model):
             value = float(value)
             if 'precision' in col_settings:
                 value = round(value, col_settings['precision'])
-
-            formatted_value = number_format(value,
-                                 decimal_pos=col_settings.get('decimals', None),
-                                 force_grouping=True)
+            if col_settings.get('number_format', True):
+                formatted_value = number_format(value,
+                                     decimal_pos=col_settings.get('decimals', None),
+                                     force_grouping=True)
+            else:
+                formatted_value = str(int(value))
             return mark_safe(u'{prefix}{value}{postfix}'.format(
                 prefix=col_settings.get('prefix', ''),
                 value=formatted_value,
@@ -125,7 +126,6 @@ class SortableTable(models.Model):
             ).strip())
         except ValueError:
             return value
-
 
 
 if CMSPlugin is not None:
